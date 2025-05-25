@@ -6,6 +6,8 @@ from pdfminer.high_level import extract_text
 import os
 import tempfile
 
+from backend.src.process_resume import process_resume_text
+
 def home(request):
     return JsonResponse({
         "message": "Backend is running!",
@@ -25,7 +27,7 @@ def upload_resume(request):
         try:
             # Extract text from the PDF file
             extracted_text = extract_text(tmp_file_path)
-            response_data = {'text': extracted_text}
+            response_data = process_resume_text(extracted_text)
         except Exception as e:
             response_data = {'error': str(e)}
         finally:
