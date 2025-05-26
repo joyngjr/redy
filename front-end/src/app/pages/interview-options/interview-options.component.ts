@@ -3,6 +3,8 @@ import { RouterLink } from '@angular/router';
 import { NgClass, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+export type QuestionType = 'Behavioural' | 'Resume Based' | 'Skills';
+
 @Component({
   selector: 'app-interview-options',
   imports: [RouterLink, NgClass, NgIf, FormsModule],
@@ -18,8 +20,7 @@ export class InterviewOptionsComponent {
     jobTitle: '',
     // timeLimit: 10, //minutes
     // questionCount: 5,
-    questionType: 'Behavourial', // Behavioural, Technical, Skills
+    questionType: 'Behavioural' as QuestionType, 
     others: '',
-  }
-
+  };
 }
