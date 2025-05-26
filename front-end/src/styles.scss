@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.header-title {
+    font-size: 4rem;
+    font-weight: 700;
+}
+
+.instruction {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
