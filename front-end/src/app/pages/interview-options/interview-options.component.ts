@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { NgClass, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { ResumeService } from '../../services/resume.service'; 
 
 export type QuestionType = 'Behavioural' | 'Resume Based' | 'Skills';
 
@@ -31,29 +32,43 @@ export class InterviewOptionsComponent {
     others: '',
   };
 
+  constructor(private resumeService: ResumeService) {}
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       if (file.type === 'application/pdf') {
         this.isUploading = true;
-        // simulate upload delay (replace with real upload logic)
-        setTimeout(() => {
-          this.selectedFile = file;
-          this.isResumeUploaded = true;
-          this.lastUploadedTime = new Date();
-          this.showUploadModal = false;
-          this.showUploadSuccess = true;
-          this.isUploading = false;
-          setTimeout(() => {
-            this.showUploadSuccess = false;
-          }, 5000);
-          // this.uploadResume(); // to be linked to backend
-        }, 2000);
+        this.selectedFile = file;
+        this.uploadResume(); // sends request to backend
       } else {
         alert('Please upload a PDF file.');
       }
     }
+  }
+
+  uploadResume() {
+    if (this.selectedFile) {
+      this.resumeService.uploadResume(this.selectedFile).subscribe({
+        next: (response) => {
+          console.log('Upload successful:', response);
+          this.isResumeUploaded = true;
+          this.lastUploadedTime = new Date();
+          this.showUploadModal = false;
+          this.showUploadSuccess = true;
+
+          setTimeout(() => {
+            this.showUploadSuccess = false;
+          }, 10000); // Hide success message after 10 seconds
+        },
+        error: (error) => {
+          console.error('Upload error:', error);
+          this.showUploadSuccess = false;
+          alert('Failed to upload resume. Please try again.');
+        }
+      });
+    }   
   }
 
   onSettingsOpened() {
