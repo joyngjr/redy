@@ -1,8 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { CAREER_COUNSELLOR_TEMPLATE, INTERVIEW_PREP_TEMPLATE } from './../prompts/prompt-template';
+import { SettingsService } from './settings.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class PromptService {
+export class PromptService implements OnDestroy {
+  private latestSettings: any;
+  private settingsSub: Subscription | undefined;
+
+  constructor(private settingsService: SettingsService) {
+    // Subscribe to always keep the latest settings
+    this.settingsSub = this.settingsService.settings$.subscribe(settings => {
+      this.latestSettings = settings;
+    });
+  }
+
   /**
    * Inserts the resume text into the career counsellor prompt template.
    */
@@ -40,6 +52,16 @@ export class PromptService {
       ? safeResume
       : 'No resume information available.';
 
-    return INTERVIEW_PREP_TEMPLATE.replace('{{resume}}', resumeSection);
+    const promptWithResume = INTERVIEW_PREP_TEMPLATE.replace('{{resume}}', resumeSection);
+    const settings = this.latestSettings || this.settingsService.getSettings();
+    const result = promptWithResume
+      .replace('{{jobTitle}}', settings.jobTitle || 'the job')
+      .replace('{{questionType}}', settings.questionType || 'the selected type');
+    console.log('[PromptService] Generated interview prompt:', result);
+    return result;
+  }
+
+  ngOnDestroy() {
+    this.settingsSub?.unsubscribe();
   }
 }

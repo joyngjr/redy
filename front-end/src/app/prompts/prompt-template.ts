@@ -14,6 +14,6 @@ You are mocking the role of an interviewer. Give feedback on the user's answers 
 Here is the user’s resume:
 {{resume}}
 
-This is the job they are applying for: <NATALIE HERE!!>
-Only ask questions on <NATALIE HERE!!>
+This is the job they are applying for: {{jobTitle}}
+Only ask questions on {{questionType}} topics.
 `
