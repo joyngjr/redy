@@ -1,12 +1,19 @@
+/* interview.component.ts */
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { VideoCallButtonComponent } from '../video-call/video-call-button/video-call-button/video-call-button.component';   // adjust path as needed
 
 @Component({
+  standalone: true,
   selector: 'app-interview',
-  imports: [RouterLink],
+  imports: [
+    CommonModule,
+    RouterLink,
+    VideoCallButtonComponent
+  ],
   templateUrl: './interview.component.html',
-  styleUrl: './interview.component.scss'
+  styleUrls: ['./interview.component.scss']
 })
-export class InterviewComponent {
+export class InterviewComponent {}
 
-}
