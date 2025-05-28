@@ -19,7 +19,7 @@ export class StreamCounsellingComponent implements OnInit {
     startMessage: `Hi there! I’m Clara, your career coach. Feel free to ask me anything about your career choices, job search, or professional development. I’m here to help you find the right path!`,
     prompt:       `You are a friendly career counsellor who guides users through their career choices and helps them find the right path. You are empathetic, supportive, and knowledgeable about various career options.`,
     avatar:       'martha',
-    backgroundImageUrl: 'https://…/counselling.jpg',
+    backgroundImageUrl: 'https://drive.google.com/uc?export=view&id=1hn8lsR5eQdFoG5WblxRUeUtbnN37pQl3',
     voice:        'martha',
     temperature:  0.6,
     topP:         0.85,
