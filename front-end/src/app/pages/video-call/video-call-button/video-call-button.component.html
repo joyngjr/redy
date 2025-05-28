@@ -1,30 +1,36 @@
-<div class="flex flex-column gap-3 align-items-center justify-content-center">
-  <!-- button -->
-  <p-button
-    (onClick)="handleClick()"
-    label="Start Scenario"
-    [disabled]="!isAvailable"
-    styleClass="bg-white text-gray-900 hover:bg-gray-200 border border-gray-300 rounded-lg px-6 py-3"
-  ></p-button>
+<div class="flex flex-row h-screen items-center" style="margin-top: -15vh;">
+  <div class="flex-1 flex flex-col justify-center items-center self-center">
+    <!-- status indicator -->
+    <div class="flex gap-2 items-center">
+      <span
+        class="border-circle align-middle inline-block mt-1"
+        [ngClass]="
+          isChecking ? 'surface-300' : isAvailable ? 'bg-success' : 'bg-danger'
+        "
+        style="height: 1.5em; width: 1.5em; vertical-align: middle; margin-right: 1.5rem; margin-left: 2rem;"
+      ></span>
 
-  <!-- status indicator -->
-  <div class="flex gap-2 align-items-center">
-    <span
-      class="border-circle"
-      [ngClass]="
-        isChecking ? 'surface-300' : isAvailable ? 'bg-green-500' : 'bg-red-500'
-      "
-      style="width: 7px; height: 7px"
-    ></span>
+      <p class="text-2xl m-0 text-foreground">
+        {{
+          isChecking
+            ? 'Checking chat status...'
+            : isAvailable
+            ? 'Chat available'
+            : 'Chat not available'
+        }}
+      </p>
+    </div>
+    <ng-container *ngIf="isChecking || !isAvailable">
+      <p class="text-base mt-2 text-accent italic">Fun fact: The first webcam was invented to monitor a coffee pot at Cambridge University!</p>
+    </ng-container>
+  </div>
 
-    <p class="m-0 text-sm text-color-secondary">
-      {{
-        isChecking
-          ? 'Checking chat status...'
-          : isAvailable
-          ? 'Chat available'
-          : 'Chat not available'
-      }}
-    </p>
+  <div class="flex-1 flex flex-col justify-center items-center self-center">
+    <!-- button in right column -->
+    <p-button class="bg-secondary px-12 h-20 rounded-xl text-3xl text-background hover:bg-accent hover:text-foreground hover:scale-105 active:translate-y-1 transition-all duration-150 flex items-center justify-center"
+      (onClick)="handleClick()"
+      label="Start Scenario"
+      [disabled]="!isAvailable"
+    ></p-button>
   </div>
 </div>
