@@ -1,0 +1,13 @@
+/* 1) Give the host element a real height */
+:host {
+  display: block;       /* make <app-pixel-streaming-video> a block */
+  width: 100%;          /* full width of parent */
+  height: 400px;        /* or 100vh, or whatever you need */
+}
+
+/* 2) Ensure the injected <video> fills that area */
+:host video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}

@@ -1,0 +1,30 @@
+<div class="flex flex-column gap-3 align-items-center justify-content-center">
+  <!-- button -->
+  <p-button
+    (onClick)="handleClick()"
+    label="Start Scenario"
+    [disabled]="!isAvailable"
+    styleClass="bg-white text-gray-900 hover:bg-gray-200 border border-gray-300 rounded-lg px-6 py-3"
+  ></p-button>
+
+  <!-- status indicator -->
+  <div class="flex gap-2 align-items-center">
+    <span
+      class="border-circle"
+      [ngClass]="
+        isChecking ? 'surface-300' : isAvailable ? 'bg-green-500' : 'bg-red-500'
+      "
+      style="width: 7px; height: 7px"
+    ></span>
+
+    <p class="m-0 text-sm text-color-secondary">
+      {{
+        isChecking
+          ? 'Checking chat status...'
+          : isAvailable
+          ? 'Chat available'
+          : 'Chat not available'
+      }}
+    </p>
+  </div>
+</div>
