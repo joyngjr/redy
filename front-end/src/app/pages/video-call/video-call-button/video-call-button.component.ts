@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
@@ -32,7 +33,7 @@ export class VideoCallButtonComponent implements OnInit, OnDestroy {
   isChecking = true;
   private destroy$ = new Subject<void>();
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router) {}
 
   ngOnInit(): void {
     timer(0, 2000)
@@ -68,7 +69,8 @@ export class VideoCallButtonComponent implements OnInit, OnDestroy {
 
   handleClick(): void {
     if (this.isAvailable) {
-      this.clicked.emit();
+      const conversationId = crypto.randomUUID(); // or fetch/generate from backend
+      this.router.navigate(['/video-call', conversationId]);
     }
   }
 }
