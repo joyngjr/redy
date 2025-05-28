@@ -54,6 +54,7 @@ export class InterviewOptionsComponent {
         next: (response) => {
           console.log('Upload successful:', response);
           this.isResumeUploaded = true;
+          this.isUploading = false;
           this.lastUploadedTime = new Date();
           this.showUploadModal = false;
           this.showUploadSuccess = true;
@@ -65,6 +66,7 @@ export class InterviewOptionsComponent {
         error: (error) => {
           console.error('Upload error:', error);
           this.showUploadSuccess = false;
+          this.isUploading = false;
           alert('Failed to upload resume. Please try again.');
         }
       });
