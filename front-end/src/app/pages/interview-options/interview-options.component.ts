@@ -21,6 +21,7 @@ export class InterviewOptionsComponent {
   selectedFile: File | null = null;
   lastUploadedTime: Date | null = null;
   showUploadSuccess: boolean = false;
+  isUploading: boolean = false;
   settings = {
     name: '',
     jobTitle: '',
@@ -35,15 +36,20 @@ export class InterviewOptionsComponent {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       if (file.type === 'application/pdf') {
-        this.selectedFile = file;
-        this.isResumeUploaded = true;
-        this.lastUploadedTime = new Date();
-        this.showUploadModal = false;
-        this.showUploadSuccess = true;
+        this.isUploading = true;
+        // simulate upload delay (replace with real upload logic)
         setTimeout(() => {
-          this.showUploadSuccess = false;
-        }, 5000);
-        // this.uploadResume(); // to be linked to backend
+          this.selectedFile = file;
+          this.isResumeUploaded = true;
+          this.lastUploadedTime = new Date();
+          this.showUploadModal = false;
+          this.showUploadSuccess = true;
+          this.isUploading = false;
+          setTimeout(() => {
+            this.showUploadSuccess = false;
+          }, 5000);
+          // this.uploadResume(); // to be linked to backend
+        }, 2000);
       } else {
         alert('Please upload a PDF file.');
       }
