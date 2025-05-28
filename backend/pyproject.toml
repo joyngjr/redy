@@ -10,7 +10,8 @@ requires-python = ">=3.10,<4"
 dependencies = [
     "pdfminer-six (>=20250506,<20250507)",
     "psycopg2-binary (>=2.9.10,<3.0.0)",
-    "openai (>=1.82.0,<2.0.0)"
+    "openai (>=1.82.0,<2.0.0)",
+    "django-cors-headers (>=4.7.0,<5.0.0)"
 ]
 
 [tool.poetry]

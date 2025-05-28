@@ -2,6 +2,8 @@ import os
 from openai import OpenAI
 import json
 import logging
+from dotenv import load_dotenv
+from django.http import JsonResponse
 
 logger = logging.getLogger(__name__)
 
@@ -131,7 +133,7 @@ def save_to_file(parsed_data):
 def process_resume_text(extracted_text):
     try:
         prompt = construct_prompt(extracted_text)
-
+        load_dotenv() 
         client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
         response = client.chat.completions.create(
             model="gpt-4.1-mini",

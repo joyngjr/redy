@@ -6,15 +6,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#0B0F19",    // very dark blue-black
-        foreground: "#FFFFFF",    // white text
-        accent: "#6399B0",        // soft dark gray-blue
-        primary: "#45A29E",       // teal/cyan for buttons or links
-        secondary: "#1C2233",     // bright aqua highlight
-        danger: "#D23F38"         // red for errors or warnings
+        background: "#1C2233",    // dark navy background
+        foreground: "#F4EDE5",    // warm off-white text
+        accent: "#6399B0",        // soft blue accent
+        primary: "#4C2A1E",       // deep brown
+        secondary: "#A4867C",     // muted light brown
+        danger: "#D13F37",         // alert red
+        success: "#5A7D4C",       // soft green for success messages
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
+        oldnews: ["OldNewspaperTypes", "serif"],
       }
     },
   },
