@@ -17,7 +17,7 @@ counsellingConfig: ConversationSetup = {
     startMessage: `Hi there! I’m Clara, your career coach…`,
     prompt:       `You are a friendly career counsellor who guides…`,
     avatar:       'martha',
-    backgroundImageUrl: 'https://…/counselling.jpg',
+    backgroundImageUrl: 'https://drive.google.com/uc?export=view&id=1hn8lsR5eQdFoG5WblxRUeUtbnN37pQl3',
     voice:        'martha',
     temperature:  0.6,
     topP:         0.85,
