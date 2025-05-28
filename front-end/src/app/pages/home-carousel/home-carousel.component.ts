@@ -6,9 +6,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeCarouselComponent implements OnInit {
   images = [
-    '/upload-resume.png', // images to be replced
-    '/customise-interview-settings.png',
-    '/press-to-start-interview.png'
+    '/images/upload-resume.svg', // images to be replced
+    '/images/customise-interview-settings.svg',
+    '/images/press-to-start-interview.svg'
   ];
   captions = [
     'She worked hard under the hot sun in 1935.',

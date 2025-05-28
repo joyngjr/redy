@@ -1,76 +1,93 @@
-<p class="instruction">Upload your resume and customise interview settings for a more tailored interview experience.</p>
-
-<div class="mb-2 p-3 bg-yellow-900 border-l-4 border-yellow-400 text-yellow-200 rounded">
-  <span class="text-xl">💡</span>
-  <span><strong>Pro Tip:</strong> Use a PDF resume for best results!</span>
+<div *ngIf="showUploadSuccess" class="fixed top-8 right-0 transform -translate-x-1/2 z-50 bg-foreground text-success px-6 py-3 rounded shadow-lg transition-opacity duration-200">
+  <button (click)="showUploadSuccess = false" class="absolute top-2 right-2 text-gray-500 hover:text-black" aria-label="Close">✕</button>
+  Resume uploaded successfully!
 </div>
+<div class="flex-1 flex flex-col min-h-0 min-h-screen">
+  <div class="mt-20 mb-2 p-3 flex justify-center items-center text-center bg-background-900 text-foreground-200 rounded">
+    <span>Build your future with grit — practice for your next interview here!</span>
+  </div>
 
 <div class="flex justify-center items-center mx-auto px-4 py-8">
   <div class="flex flex-row justify-center gap-4 w-full">
-    <button class="flex justify-end items-center h-full">
-      <img src="/upload-resume.png" alt="Upload Resume Button" 
-        class="h-full w-auto object-contain"/> <!--hover:outline hover:outline-4 hover:outline-blue-500 transition -->
-    </button>
+    <div class="flex flex-col items-center gap-2">
+      <button class="flex justify-end items-center h-full" (click)="showUploadModal = true">
+        <img src="/images/upload-resume.svg" alt="Upload Resume Button" class="h-full w-auto object-contain"/>
+      </button>
+      <div *ngIf="lastUploadedTime" class="text-xs text-foreground text-center mt-1">
+        Last uploaded: {{ lastUploadedTime | date:'short' }}
+      </div>
+    </div>
     <div class="flex flex-col gap-4 h-full">
       <button class="flex justify-start items-center h-full" 
         type="button"
         (click)="showSettings = true"
         [disabled]="!isResumeUploaded" 
         [ngClass]="{'opacity-50 cursor-not-allowed': !isResumeUploaded}">
-        <img src="/customise-interview-settings.png" alt="Customise Interview Settings Button" 
+        <img src="/images/settings.svg" alt="Customise Interview Settings Button" 
             class="h-full w-auto object-contain"/>
       </button>
       <button class="flex justify-start items-center h-full" 
         routerLink="/interview"
         [disabled]="!isResumeUploaded" 
         [ngClass]="{'opacity-50 cursor-not-allowed': !isResumeUploaded}">
-        <img src="/press-to-start-interview.png" alt="Start Interview Button" 
+        <img src="/images/start-interview.svg" alt="Start Interview Button" 
             class="h-full w-auto object-contain"/>
       </button>
     </div>
   </div>
 </div>
 
-<!-- Settings Modal -->
-<div *ngIf="showSettings" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-  <div class="bg-secondary rounded-lg shadow-lg p-6 min-w-[300px] relative">
-    <button (click)="showSettings = false" class="absolute top-2 right-2 text-gray-500 hover:text-black" aria-label="Close"
-    >✕</button>
-    <h1 class="text-lg font-bold mb-4">Interview Settings</h1>
-    <p class="text"> Changes are auto saved.</p>
-    <!-- Settings content -->
-    <form>
-      <label class="block mb-2"> Name:
-        <input type="text" [(ngModel)]="settings.name" name="name"
-          class="mt-1 block w-full rounded bg-gray-800 text-white p-2"
-        />
-      </label>
-      <label class="block mb-2"> Desired Job Title:
-        <input type="text" [(ngModel)]="settings.jobTitle" name="jobTitle"
-          class="mt-1 block w-full rounded bg-gray-800 text-white p-2"
-        />
-      </label>
-      <label class="block mb-2"> Others:
-        <textarea [(ngModel)]="settings.others" name="others"
-          class="mt-1 block w-full rounded bg-gray-800 text-white p-2"
-        ></textarea>
-      </label>
-      <label class="block mb-2"> Question Type:
-        <div class="flex gap-2 mt-1">
-          <button type="button" class="px-4 py-2 rounded transition"
-            [ngClass]="settings.questionType === 'Behavioural' ? 'bg-primary text-white' : 'bg-gray-800 text-gray-200'"
-            (click)="settings.questionType = 'Behavioural'"
-          >Behavioural</button>
-          <button type="button" class="px-4 py-2 rounded transition"
-            [ngClass]="settings.questionType === 'Resume Based' ? 'bg-primary text-white' : 'bg-gray-800 text-gray-200'"
-            (click)="settings.questionType = 'Resume Based'"
-          >Resume Based</button>
-          <button type="button" class="px-4 py-2 rounded transition"
-            [ngClass]="settings.questionType === 'Skills' ? 'bg-primary text-white' : 'bg-gray-800 text-gray-200'"
-            (click)="settings.questionType = 'Skills'"
-          >Skills</button>
-        </div>
-      </label>
-    </form>
+  <!-- Upload Modal -->
+  <div *ngIf="showUploadModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-background rounded-lg shadow-lg p-6 min-w-[300px] relative">
+      <button (click)="showUploadModal = false" class="absolute top-2 right-2 text-gray-500 hover:text-black" aria-label="Close">✕</button>
+      <h1 class="text-lg font-bold mb-4">Upload Resume (PDF only)</h1>
+      <input type="file" accept="application/pdf" (change)="onFileSelected($event)" class="block w-full text-background mb-4"/>
+      <button (click)="showUploadModal = false" class="mt-2 px-4 py-2 bg-accent text-white rounded">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div *ngIf="showSettings" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-background rounded-lg shadow-lg p-6 min-w-[300px] relative">
+      <button (click)="showSettings = false" class="absolute top-2 right-2 text-gray-500 hover:text-black" aria-label="Close"
+      >✕</button>
+      <h1 class="text-2xl font-bold mb-4">Interview Settings</h1>
+      <p class="text-base mb-8 italic text-accent"> All changes are auto saved.</p>
+      <!-- Settings content -->
+      <form>
+        <label class="block mb-2"> Name:
+          <input type="text" [(ngModel)]="settings.name" name="name"
+            class="mt-1 block w-full rounded bg-gray-800 text-white p-2"
+          />
+        </label>
+        <label class="block mb-2"> Desired Job Title:
+          <input type="text" [(ngModel)]="settings.jobTitle" name="jobTitle"
+            class="mt-1 block w-full rounded bg-gray-800 text-white p-2"
+          />
+        </label>
+        <label class="block mb-2"> Others:
+          <textarea [(ngModel)]="settings.others" name="others"
+            class="mt-1 block w-full rounded bg-gray-800 text-white p-2"
+          ></textarea>
+        </label>
+        <label class="block mb-2"> Question Type:
+          <div class="flex gap-2 mt-1">
+            <button type="button" class="px-4 py-2 rounded transition"
+              [ngClass]="settings.questionType === 'Behavioural' ? 'bg-accent text-white' : 'bg-gray-800 text-gray-200'"
+              (click)="settings.questionType = 'Behavioural'"
+            >Behavioural</button>
+            <button type="button" class="px-4 py-2 rounded transition"
+              [ngClass]="settings.questionType === 'Resume Based' ? 'bg-accent text-white' : 'bg-gray-800 text-gray-200'"
+              (click)="settings.questionType = 'Resume Based'"
+            >Resume Based</button>
+            <button type="button" class="px-4 py-2 rounded transition"
+              [ngClass]="settings.questionType === 'Skills' ? 'bg-accent text-white' : 'bg-gray-800 text-gray-200'"
+              (click)="settings.questionType = 'Skills'"
+            >Skills</button>
+          </div>
+        </label>
+      </form>
+    </div>
   </div>
 </div>

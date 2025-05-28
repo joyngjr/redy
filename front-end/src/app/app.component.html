@@ -1,15 +1,38 @@
-<main class="main p-4 sm:p-6 md:p-10">
-  <div class="header-title">
-    product name
-  </div>
-   <nav class="w-full flex flex-col mb-6">
-    <div class="border-b border-gray-200 mb-2"></div>
-    <div class="flex items-center gap-6">
-      <a routerLink="/" class="text-gray-600 hover:text-white transition" routerLinkActive="!text-white" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-      <a routerLink="/interview-options" class="text-gray-600 hover:text-white transition" routerLinkActive="!text-white">Interview Practice</a>
-      <a routerLink="#" class="text-gray-600 hover:text-white transition" routerLinkActive="!text-white">Chat</a>
-      <a routerLink="#" class="text-gray-600 hover:text-white transition" routerLinkActive="!text-white">Job Search</a>
+<main class="main h-screen flex flex-row p-0">
+  <!-- Sidebar nav: only show if not on home page -->
+  <ng-container *ngIf="!isHomePage">
+    <!-- Hamburger Button -->
+    <button class="fixed top-4 left-4 z-50 flex items-center justify-center w-12 h-12 rounded-lg bg-background shadow-lg border-2 border-foreground-400" (click)="showSidebar = !showSidebar" aria-label="Open sidebar">
+      <svg class="w-8 h-8 text-foreground" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="flex flex-row h-screen w-full">
+      <nav *ngIf="showSidebar"
+        class="h-screen flex flex-col justify-start pt-20 gap-8 shadow-2xl font-oldnews text-primary w-80 md:w-64 sm:w-48 min-w-[96px] bg-background"
+        [ngStyle]="{ 'transform': showSidebar ? 'translateX(0)' : 'translateX(-100%)', 'transition': 'transform 0.4s cubic-bezier(0.4,0,0.2,1)' }"
+        style="background: url('/images/navbar.svg') repeat-y right top / 100% auto; letter-spacing: 0.04em;">
+        <div class="py-[7.14vh] pl-6 md:pl-4 sm:pl-2 text-3xl md:text-2xl sm:text-xl tracking-widest text-background drop-shadow-[2px_2px_0_rgba(191,167,106,0.5)]">
+          product name
+        </div>
+        <a routerLink="/"
+          class="text-left px-8 md:px-6 sm:px-4 py-4 md:py-3 sm:py-2 mx-auto rounded-lg text-xl md:text-lg sm:text-base text-background hover:bg-secondary hover:text-foreground transition w-[92%]"
+          [routerLinkActive]="''" [routerLinkActiveOptions]="{ exact: true }">
+          Home</a>
+        <a routerLink="/interview-options"
+          class="text-left px-8 md:px-6 sm:px-4 py-4 md:py-3 sm:py-2 mx-auto rounded-lg text-xl md:text-lg sm:text-base text-background hover:bg-secondary hover:text-foreground transition w-[92%]"
+          routerLinkActive="!bg-primary !text-foreground">
+          Interview Practice</a>
+        <a href="#"
+          class="text-left px-8 md:px-6 sm:px-4 py-4 md:py-3 sm:py-2 mx-auto rounded-lg text-xl md:text-lg sm:text-base text-background hover:bg-secondary hover:text-foreground transition w-[92%]"
+          routerLinkActive="!bg-primary !text-white">
+          Chat</a>
+        <a href="#"
+          class="text-left px-8 md:px-6 sm:px-4 py-4 md:py-3 sm:py-2 mx-auto rounded-lg text-xl md:text-lg sm:text-base text-background hover:bg-secondary hover:text-foreground transition w-[92%]"
+          routerLinkActive="!bg-primary !text-white">
+          Job Search</a>
+      </nav>
+      <div class="flex-1 flex flex-col min-h-0 min-h-screen w-full p-4 sm:p-6 md:p-10 transition-all duration-300">
+        <router-outlet></router-outlet>
+      </div>
     </div>
-  </nav>
-  <router-outlet></router-outlet>
+  </ng-container>
 </main>
