@@ -15,6 +15,7 @@ export type QuestionType = 'Behavioural' | 'Resume Based' | 'Skills';
 })
 export class InterviewOptionsComponent {
   isResumeUploaded: boolean = false;
+  isSettingsChanged: boolean = false;
   showSettings: boolean = false;
   showUploadModal: boolean = false;
   selectedFile: File | null = null;
@@ -23,8 +24,6 @@ export class InterviewOptionsComponent {
   settings = {
     name: '',
     jobTitle: '',
-    // timeLimit: 10, //minutes
-    // questionCount: 5,
     questionType: 'Behavioural' as QuestionType, 
     others: '',
   };
@@ -41,11 +40,15 @@ export class InterviewOptionsComponent {
         this.showUploadSuccess = true;
         setTimeout(() => {
           this.showUploadSuccess = false;
-        }, 10000); // Hide after 10 seconds
+        }, 5000); // Hide after 10 seconds
         // this.uploadResume(); // to be linked to backend
       } else {
         alert('Please upload a PDF file.');
       }
     }
+  }
+
+  onSettingsOpened() {
+    this.isSettingsChanged = true;
   }
 }
