@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 # Function calling helper to ensure LLM response produces vaLid JSON schema
 resume_parser_function = {
     "name": "parse_resume",
-    "description": "Parse a resume into structured JSON data",
+    "description": "Parse a resume into structured JSON data. Recommend only 1 job title based on the resume content.",
     "parameters": {
         "type": "object",
         "properties": {
@@ -54,7 +54,8 @@ resume_parser_function = {
                     },
                     "required": ["name"]
                 }
-            }
+            },
+        "recommended_job_title": {"type": "string"}
         },
         "required": ["name"]
     }

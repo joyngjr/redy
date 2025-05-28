@@ -17,4 +17,8 @@ export class ResumeService {
   retrieveResume(): Observable<any> {
     return this.http.get(`${this.baseUrl}/retrieve_resume/`);
   }
+
+  retrieveJob(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/retrieve_job/`);
+  }
 }

@@ -53,3 +53,19 @@ def retrieve_resume(request):
         return JsonResponse(data)
     except Exception as e:
         return JsonResponse({'error': f'Error reading resume data: {str(e)}'}, status=500)
+    
+@csrf_exempt
+def retrieve_job(request):
+    import json
+    data_file = os.path.join(os.path.dirname(__file__), 'src', 'data.json')
+    if not os.path.exists(data_file):
+        return JsonResponse({'error': 'No resume data found. Please upload a resume first.'}, status=404)
+
+    try:
+        with open(data_file, 'r') as f:
+            data = json.load(f)
+        if not data or 'recommended_job_title' not in data:
+            return JsonResponse({'error': 'No recommended job title found.'}, status=404)
+        return JsonResponse({'recommended_job_title': data['recommended_job_title']})
+    except Exception as e:
+        return JsonResponse({'error': f'Error reading resume data: {str(e)}'}, status=500)
