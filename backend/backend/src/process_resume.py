@@ -2,8 +2,6 @@ import os
 from openai import OpenAI
 import json
 import logging
-from datetime import datetime
-from backend.models import Resume, Experience, Project, Skill
 
 logger = logging.getLogger(__name__)
 
@@ -113,42 +111,21 @@ def process_response(response):
     parsed_data = json.loads(arguments_json)
     return parsed_data
 
-def save_to_db(parsed_data):
-    resume = Resume.objects.create(
-        name=parsed_data.get('name', ''),
-        email=parsed_data.get('email', ''),
-        phone=parsed_data.get('phone', ''),
-        summary=parsed_data.get('summary', ''),
-    )
+# Overwrites processed resume with parsed data - Allowed since only one avatar connection is enabled at a time
+def save_to_file(parsed_data):
+    filename = f"data.json"
+    dir_path = os.path.join("backend", "src")
+    file_path = os.path.join(dir_path, filename)
+    logger.info(f"Saving parsed resume to {file_path}")
 
-    for exp in parsed_data.get('experiences', []):
-        start_date = exp.get('start_date') or None
-        end_date = exp.get('end_date') or None
-        Experience.objects.create(
-            resume=resume,
-            job_title=exp.get('job_title', ''),
-            company=exp.get('company', ''),
-            description=exp.get('description', ''),
-            start_date=datetime.fromisoformat(start_date) if start_date else None,
-            end_date=datetime.fromisoformat(end_date) if end_date else None,
-        )
+    # Make directory if it doesn't exist
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-    for proj in parsed_data.get('projects', []):
-        Project.objects.create(
-            resume=resume,
-            title=proj.get('title', ''),
-            description=proj.get('description', ''),
-            technologies=proj.get('technologies', ''),
-        )
-
-    for skill in parsed_data.get('skills', []):
-        Skill.objects.create(
-            resume=resume,
-            name=skill.get('name', ''),
-            proficiency=skill.get('proficiency', ''),
-        )
-
-    return
+    with open(file_path, 'w') as f:
+        json.dump(parsed_data, f, indent=4)
+    
+    logger.info(f"Parsed resume saved to {file_path}")
+    return file_path
 
 # Main function used to create LLM call and process response
 def process_resume_text(extracted_text):
@@ -167,7 +144,7 @@ def process_resume_text(extracted_text):
         )
 
         parsed_data = process_response(response)
-        save_to_db(parsed_data)
+        save_to_file(parsed_data)
         return {'status': 'success', 'parsed_data': parsed_data}
 
     except Exception as e:
