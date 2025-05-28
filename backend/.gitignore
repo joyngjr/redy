@@ -8,12 +8,6 @@ __pycache__/
 # Poetry
 venv/
 
-# Django
-*.sqlite3
-db.sqlite3
-/media/
-/staticfiles/
-
 # VSCode
 .vscode/
 
@@ -21,3 +15,5 @@ db.sqlite3
 .DS_Store
 Thumbs.db
 
+# Database
+backend/src/data.json
