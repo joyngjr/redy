@@ -22,8 +22,8 @@ export class StreamInterviewComponent implements OnInit {
     avatar:       'henry',
     backgroundImageUrl: 'https://drive.google.com/uc?export=view&id=1q0ltRHC0pn2JhwUIa3-jHs6DNW_sgwEp',
     voice:        'henry',
-    temperature:  0.7,
-    topP:         0.9,
+    temperature:  0.65,
+    topP:         0.7,
   };
 
   constructor(

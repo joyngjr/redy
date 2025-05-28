@@ -40,7 +40,7 @@ export class StreamCounsellingComponent implements OnInit {
           avatar: 'martha',
           backgroundImageUrl: 'https://…/counselling.jpg',
           voice: 'martha',
-          temperature: 0.6,
+          temperature: 0.7,
           topP: 0.85,
         };
 
