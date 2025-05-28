@@ -12,7 +12,7 @@ module.exports = {
         primary: "#4C2A1E",       // deep brown
         secondary: "#A4867C",     // muted light brown
         danger: "#D13F37",         // alert red
-        success: "#8BAA5C",       // soft green for success messages
+        success: "#5A7D4C",       // soft green for success messages
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],

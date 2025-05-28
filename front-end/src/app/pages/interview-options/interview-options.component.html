@@ -10,7 +10,10 @@
 <div class="flex justify-center items-center mx-auto px-4 py-8">
   <div class="flex flex-row justify-center gap-4 w-full">
     <div class="flex flex-col items-center gap-2">
-      <button class="flex justify-end items-center h-full transition-transform duration-200 hover:scale-105 active:scale-95" (click)="showUploadModal = true">
+      <button
+        class="flex justify-end items-center h-full transition-transform duration-200 hover:scale-105 active:scale-95"
+        (click)="showUploadModal = true"
+      >
         <img src="/images/upload-resume.svg" alt="Upload Resume Button" class="h-full w-auto object-contain"/>
       </button>
       <div *ngIf="lastUploadedTime" class="text-xs text-foreground text-center mt-1">
@@ -18,20 +21,26 @@
       </div>
     </div>
     <div class="flex flex-col gap-4 h-full">
-      <button class="flex justify-start items-center h-full transition-transform duration-200 hover:scale-105 active:scale-95" 
+      <button
+        class="flex justify-start items-center h-full"
+        [ngClass]="[
+          (!isResumeUploaded ? 'opacity-50 cursor-not-allowed' : 'transition-transform duration-200 hover:scale-105 active:scale-95')
+        ]"
         type="button"
         (click)="showSettings = true; onSettingsOpened()"
-        [disabled]="!isResumeUploaded" 
-        [ngClass]="{'opacity-50 cursor-not-allowed': !isResumeUploaded}">
-        <img src="/images/settings.svg" alt="Customise Interview Settings Button" 
-            class="h-full w-auto object-contain"/>
+        [disabled]="!isResumeUploaded"
+      >
+        <img src="/images/settings.svg" alt="Customise Interview Settings Button" class="h-full w-auto object-contain"/>
       </button>
-      <button class="flex justify-start items-center h-full transition-transform duration-200 hover:scale-105 active:scale-95" 
+      <button
+        class="flex justify-start items-center h-full"
+        [ngClass]="[
+          (!isSettingsChanged ? 'opacity-50 cursor-not-allowed' : 'transition-transform duration-200 hover:scale-105 active:scale-95')
+        ]"
         routerLink="/interview"
-        [disabled]="!isSettingsChanged" 
-        [ngClass]="{'opacity-50 cursor-not-allowed': !isSettingsChanged}">
-        <img src="/images/start-interview.svg" alt="Start Interview Button" 
-            class="h-full w-auto object-contain"/>
+        [disabled]="!isSettingsChanged"
+      >
+        <img src="/images/start-interview.svg" alt="Start Interview Button" class="h-full w-auto object-contain"/>
       </button>
     </div>
   </div>
