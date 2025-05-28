@@ -13,4 +13,8 @@ export class ResumeService {
     formData.append('resume', file);
     return this.http.post(`${this.baseUrl}/upload_resume/`, formData);
   }
+
+  retrieveResume(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/retrieve_resume/`);
+  }
 }
