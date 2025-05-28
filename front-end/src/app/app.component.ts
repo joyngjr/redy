@@ -13,7 +13,7 @@ import { filter } from 'rxjs/operators';
 export class AppComponent {
   title = 'angular';
   isHomePage: boolean = false;
-  showSidebar = false;
+  showSidebar = true;
 
   constructor(private router: Router) {
     this.router.events

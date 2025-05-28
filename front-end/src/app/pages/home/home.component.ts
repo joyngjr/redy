@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { HomeCarouselComponent } from '../home-carousel/home-carousel.component';
+import { IntroComponent } from '../intro/intro.component';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, HomeCarouselComponent],
+  imports: [RouterLink, IntroComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   standalone: true,
