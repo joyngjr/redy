@@ -1,34 +1,30 @@
-import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ConversationWebsocketService } from '../../../services/conversation-websocket.service';
+import { ConversationWebsocketService } from '../../services/conversation-websocket.service';
 import { Subscription } from 'rxjs';
-import { environment } from '../../../../environment';
-import { PixelStreamingVideoComponent } from '../pixel-video-streaming/pixel-video-streaming.component';
+import { environment } from '../../../environment';
+import { PixelStreamingVideoComponent } from '../video-call/pixel-video-streaming/pixel-video-streaming.component';
+import { ConversationSetup } from '../../models/conversation-setup.model';
 
 @Component({
   standalone: true,
-  selector: 'app-conversation',
+  selector: 'app-reusable-conversation',
   imports: [PixelStreamingVideoComponent],
   template: `
-  <div>
-    <app-pixel-streaming-video
-      [avatarId]="avatarUuid">
-      </app-pixel-streaming-video>
-    <audio #remoteAudio autoplay></audio>
-  </div>
-`
+    <div>
+      <app-pixel-streaming-video [avatarId]="avatarUuid"></app-pixel-streaming-video>
+      <audio #remoteAudio autoplay></audio>
+    </div>
+  `
 })
-
-
-export class ConversationComponent implements OnInit, OnDestroy {
+export class ReusableConversationComponent implements OnInit, OnDestroy {
+  @Input() config!: ConversationSetup;
   @ViewChild('remoteAudio', { static: true }) remoteAudioRef!: ElementRef<HTMLAudioElement>;
 
   private peerConnection: RTCPeerConnection | null = null;
   private localMediaStream: MediaStream | null = null;
-
   conversationId = '';
   avatarUuid = '';
-  token = '';
   private sub?: Subscription;
 
   constructor(
@@ -36,7 +32,41 @@ export class ConversationComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {}
 
-  async setupPeerConnection() {
+  ngOnInit() {
+    this.conversationId = this.route.snapshot.paramMap.get('conversationId')!;
+    const socket$ = this.websocketService.connect(this.conversationId);
+
+    this.sub = socket$.subscribe(msg => {
+      if (msg.type === 'status' && msg.avatar_uuid) {
+        this.avatarUuid = msg.avatar_uuid;
+        this.setupPeerConnection();
+      }
+      if (msg.type === 'answer' && this.peerConnection) {
+        this.peerConnection.setRemoteDescription(
+          new RTCSessionDescription(msg.answer)
+        );
+      }
+    });
+
+    // send “setup” using whatever this.config is:
+    setTimeout(() => {
+      this.websocketService.send({
+        type: 'setup',
+        param: {
+          apiKey: environment.apiKey || '',
+          startMessage: this.config.startMessage,
+          prompt:       this.config.prompt,
+          avatar:       this.config.avatar,
+          backgroundImageUrl: this.config.backgroundImageUrl,
+          voice:        this.config.voice,
+          temperature:  this.config.temperature,
+          topP:         this.config.topP,
+        }
+      });
+    }, 1000);
+  }
+
+   async setupPeerConnection() {
     if (this.peerConnection) {
       this.peerConnection.close();
     }
@@ -87,47 +117,6 @@ export class ConversationComponent implements OnInit, OnDestroy {
     } catch (err) {
       console.error('Error setting up WebRTC audio:', err);
     }
-  }
-
-
-  ngOnInit(): void {
-    this.conversationId = this.route.snapshot.paramMap.get('conversationId') || '';
-    const socket$ = this.websocketService.connect(this.conversationId);
-
-    this.sub = socket$.subscribe({
-      next: (msg) => {
-        console.log('WebSocket message:', msg);
-
-        if (msg.type === 'status' && msg.avatar_uuid) {
-          this.avatarUuid = msg.avatar_uuid;
-          this.token = msg.token ?? '';
-          this.setupPeerConnection();
-        }
-
-        if (msg.type === 'answer' && this.peerConnection) {
-          const remoteDesc = new RTCSessionDescription(msg.answer);
-          this.peerConnection.setRemoteDescription(remoteDesc);
-        }
-      },
-      error: (err) => console.error('WebSocket error:', err),
-      complete: () => console.log('WebSocket closed')
-    });
-
-    setTimeout(() => {
-      this.websocketService.send({
-        type: 'setup',
-        param: {
-          apiKey: environment.apiKey || '',
-          startMessage: 'Hello, I\'m Henry, your interviewer for today. Before we begin, can you tell me more about youself?',
-          prompt: 'You are an interviewer for a job interview. You will ask the user questions and evaluate their responses.',
-          avatar: 'henry',
-          backgroundImageUrl: 'https://images.pexels.com/photos/683039/pexels-photo-683039.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-          voice: 'henry',
-          temperature: 0.7,
-          topP: 0.9,
-        }
-      });
-    }, 1000);
   }
 
   ngOnDestroy(): void {
