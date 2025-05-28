@@ -22,6 +22,7 @@ export class InterviewOptionsComponent {
   selectedFile: File | null = null;
   lastUploadedTime: Date | null = null;
   showUploadSuccess: boolean = false;
+  isUploading: boolean = false;
   settings = {
     name: '',
     jobTitle: '',
@@ -38,6 +39,7 @@ export class InterviewOptionsComponent {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       if (file.type === 'application/pdf') {
+        this.isUploading = true;
         this.selectedFile = file;
         this.uploadResume(); // sends request to backend
       } else {
