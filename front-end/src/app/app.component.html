@@ -10,8 +10,8 @@
         class="h-screen flex flex-col justify-start pt-20 gap-8 shadow-2xl font-oldnews text-primary w-80 md:w-64 sm:w-48 min-w-[96px] bg-background"
         [ngStyle]="{ 'transform': showSidebar ? 'translateX(0)' : 'translateX(-100%)', 'transition': 'transform 0.4s cubic-bezier(0.4,0,0.2,1)' }"
         style="background: url('/images/navbar.svg') repeat-y right top / 100% auto; letter-spacing: 0.04em;">
-        <div class="py-[7.14vh] pl-6 md:pl-4 sm:pl-2 text-3xl md:text-2xl sm:text-xl tracking-widest text-background drop-shadow-[2px_2px_0_rgba(191,167,106,0.5)]">
-          product name
+        <div class="py-[7.14vh] pl-8 md:pl-6 sm:pl-4 text-4xl md:text-3xl sm:text-2xl tracking-widest text-background drop-shadow-[2px_2px_0_rgba(191,167,106,0.5)]">
+          Redy
         </div>
         <a routerLink="/"
           class="text-left px-8 md:px-6 sm:px-4 py-4 md:py-3 sm:py-2 mx-auto rounded-lg text-xl md:text-lg sm:text-base text-background hover:bg-secondary hover:text-foreground transition w-[92%]"
@@ -33,6 +33,11 @@
       <div class="flex-1 flex flex-col min-h-0 min-h-screen w-full p-4 sm:p-6 md:p-10 transition-all duration-300">
         <router-outlet></router-outlet>
       </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isHomePage">
+    <div class="flex-1 flex flex-col min-h-0 min-h-screen w-full p-4 sm:p-6 md:p-10 transition-all duration-300">
+      <router-outlet></router-outlet>
     </div>
   </ng-container>
 </main>
