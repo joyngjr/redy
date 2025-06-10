@@ -1,6 +1,6 @@
 # :floppy_disk: Redy
-[Awarded Second Runner Up :trophy:]
-Redy is a career preparation tool used for interview practice and career planning. Inspired by the resilient spirit of the Samsui women, Redy adopts a gamified approach for job seekers to hone their skills by speaking with AI avatars powered by Claude Sonnet 4. This project was built for the National AI Student Challenge 2025 Hackathon - Temus Track.
+**:trophy: Second Runner Up - National AI Student Challenge 2025 Hackathon - Temus Track**  
+Redy is a career preparation tool used for interview practice and career planning. Inspired by the resilient spirit of the Samsui women, Redy adopts a gamified approach for job seekers to hone their skills by speaking with AI avatars powered by Claude Sonnet 4.
 
 <br>
 
