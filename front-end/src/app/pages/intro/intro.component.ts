@@ -22,30 +22,52 @@ export class IntroComponent {
   displayedText = '';
   isTyping = false;
   isSkipped = false;
+  hasSeenIntro = false;
+  typingTimeout: any;
 
   ngOnInit() {
-    this.typeCurrentLine();
+    this.hasSeenIntro = sessionStorage.getItem('hasSeenIntro') === 'true';
+    if (this.hasSeenIntro) {
+      this.isSkipped = true;
+      this.displayedText = '🎮 Let\'s go!';
+    } else {
+      this.typeCurrentLine();
+    }
   }
 
   typeCurrentLine() {
     const line = this.lines[this.currentLineIndex];
     this.displayedText = '';
     this.isTyping = true;
-
     let charIndex = 0;
     const typingSpeed = 30;
 
     const typeNextChar = () => {
+      if (this.isSkipped) {
+        this.displayedText = '🎮 Let\'s go!';
+        this.isTyping = false;
+        return;
+      }
       if (charIndex < line.length) {
         this.displayedText += line[charIndex];
         charIndex++;
-        setTimeout(typeNextChar, typingSpeed);
+        this.typingTimeout = setTimeout(typeNextChar, typingSpeed);
       } else {
         this.isTyping = false;
       }
     };
 
     typeNextChar();
+  }
+
+  skipIntro() {
+    this.isSkipped = true;
+    sessionStorage.setItem('hasSeenIntro', 'true');
+    this.displayedText = '🎮 Let\'s go!';
+    this.isTyping = false;
+    if (this.typingTimeout) {
+      clearTimeout(this.typingTimeout);
+    }
   }
 
   nextLine() {
@@ -56,6 +78,7 @@ export class IntroComponent {
       this.typeCurrentLine();
     } else {
       this.displayedText = '🎮 Let\'s go!';
+      sessionStorage.setItem('hasSeenIntro', 'true');
     }
   }
 }
