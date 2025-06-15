@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common';
+import { NgIf, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-intro',
-  imports: [RouterLink, NgIf],
+  imports: [RouterLink, NgIf, NgClass],
   templateUrl: './intro.component.html',
   styleUrl: './intro.component.scss',
   standalone: true,
@@ -24,14 +24,25 @@ export class IntroComponent {
   isSkipped = false;
   hasSeenIntro = false;
   typingTimeout: any;
+  final_text = 'Are you Redy?';
 
   ngOnInit() {
     this.hasSeenIntro = sessionStorage.getItem('hasSeenIntro') === 'true';
     if (this.hasSeenIntro) {
-      this.isSkipped = true;
-      this.displayedText = '🎮 Let\'s go!';
+      this.skipIntro();
     } else {
       this.typeCurrentLine();
+    }
+  }
+
+  skipIntro() {
+    this.isSkipped = true;
+    this.displayedText = this.final_text;
+    this.isTyping = false;
+    sessionStorage.setItem('hasSeenIntro', 'true');
+    if (this.typingTimeout) {
+      clearTimeout(this.typingTimeout);
+      this.typingTimeout = null;
     }
   }
 
@@ -44,8 +55,7 @@ export class IntroComponent {
 
     const typeNextChar = () => {
       if (this.isSkipped) {
-        this.displayedText = '🎮 Let\'s go!';
-        this.isTyping = false;
+        this.skipIntro();
         return;
       }
       if (charIndex < line.length) {
@@ -60,16 +70,6 @@ export class IntroComponent {
     typeNextChar();
   }
 
-  skipIntro() {
-    this.isSkipped = true;
-    sessionStorage.setItem('hasSeenIntro', 'true');
-    this.displayedText = '🎮 Let\'s go!';
-    this.isTyping = false;
-    if (this.typingTimeout) {
-      clearTimeout(this.typingTimeout);
-    }
-  }
-
   nextLine() {
     if (this.isTyping) return;
 
@@ -77,8 +77,7 @@ export class IntroComponent {
       this.currentLineIndex++;
       this.typeCurrentLine();
     } else {
-      this.displayedText = '🎮 Let\'s go!';
-      sessionStorage.setItem('hasSeenIntro', 'true');
+      this.skipIntro();
     }
   }
 }
