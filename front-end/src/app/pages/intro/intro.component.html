@@ -1,11 +1,12 @@
 <div class="intro text-foreground">
-  <p>{{ displayedText }}</p>
-  <button *ngIf="!isTyping && displayedText !== '🎮 Let\'s go!'" 
-    class="intro bg-secondary mt-2 px-6 h-10 rounded-lg text-lg text-background shadow-md hover:bg-accent hover:text-foreground active:translate-y-1 active:shadow-sm transition-all duration-150 flex items-center justify-center" 
-    style="cursor: pointer; min-height: 2.5rem;" (click)="nextLine()">
+  <p [ngClass]="{'text-center': displayedText === final_text}" class="mb-2">{{ displayedText }}</p>
+  <div class="h-12"></div>
+  <button *ngIf="!isTyping && displayedText !== final_text" 
+    class="fixed bottom-0 left-6 z-50 bg-secondary px-3 py-2 rounded-lg text-lg text-background shadow-md hover:bg-accent hover:text-foreground active:translate-y-1 active:shadow-sm transition-all duration-150 flex items-center justify-center"
+    style="cursor: pointer; min-width: 5rem; max-width: 12rem;" (click)="nextLine()">
     {{ currentLineIndex < lines.length - 1 ? 'Next' : 'Start' }}
   </button>
-  <ng-container *ngIf="displayedText === '🎮 Let\'s go!' || isSkipped">
+  <ng-container *ngIf="displayedText === final_text || isSkipped">
     <div class="flex flex-col gap-4 mt-4 w-full">
       <a routerLink="/interview-options" class="w-full">
         <button class="w-full bg-secondary text-background px-5 h-12 rounded-lg shadow-md font-oldnews hover:bg-accent hover:text-foreground hover:scale-105 transition-all duration-150">Interview Practice</button>
@@ -19,11 +20,11 @@
     </div>
   </ng-container>
 </div>
-<!-- Skip button fixed at bottom right -->
-<!-- <button
-  class="fixed bottom-6 right-6 z-50 bg-accent text-background px-6 py-3 rounded-lg shadow-lg font-bold text-lg hover:bg-secondary hover:text-foreground transition-all duration-150"
-  (click)="isSkipped = true"
-  *ngIf="!isSkipped"
+<button
+  class="fixed bottom-0 right-6 z-50 bg-background text-secondary px-3 py-2 rounded-lg shadow-lg text-lg hover:bg-accent hover:text-foreground transition-all duration-150"
+  style=" min-width: 5rem;"
+  (click)="skipIntro()"
+  *ngIf="!isSkipped && !hasSeenIntro"
 >
   Skip
-</button> -->
+</button>
